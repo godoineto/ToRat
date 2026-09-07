@@ -102,7 +102,7 @@ func (a *API) Speedtest(v shared.Void, r *shared.Speedtest) error {
 		return err
 	}
 
-	serverList, err := speedtest.FetchServerList(user)
+	serverList, err := speedtest.FetchServers(user)
 	if err != nil {
 		return err
 	}
