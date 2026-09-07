@@ -1,4 +1,4 @@
-FROM godoineto/tor-static:latest
+FROM tor-static:local
 
 # Go is already installed by tor-static, but ensure it's available
 ENV GO_VERSION=1.26.0
