@@ -11,8 +11,8 @@ import (
 	"net/rpc"
 	"time"
 
-	"github.com/cretz/bine/process/embedded"
-	"github.com/cretz/bine/tor"
+	"github.com/godoineto/bine/process/embedded"
+	"github.com/godoineto/bine/tor"
 )
 
 // connect dials a remote tor address and returns the resulting connection

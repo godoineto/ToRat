@@ -14,7 +14,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/cretz/bine/tor"
+	"github.com/godoineto/bine/tor"
 )
 
 func main() {

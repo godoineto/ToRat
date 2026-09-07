@@ -12,8 +12,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/cretz/bine/tor"
-	torEd25519 "github.com/cretz/bine/torutil/ed25519"
+	"github.com/godoineto/bine/tor"
+	torEd25519 "github.com/godoineto/bine/torutil/ed25519"
 	"github.com/fatih/color"
 )
 
