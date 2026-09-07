@@ -11,9 +11,13 @@ WORKDIR /work
 # Copy both bine and ToRat for go.work to find them
 COPY bine bine
 COPY ToRat ToRat
+
+# Put go.work at workspace root so Go finds both modules
+RUN cd ToRat && cat go.work > /work/go.work && cd /work
+
 WORKDIR /work/ToRat
 
-RUN go mod download -x
+RUN GOWORK=/work/go.work go mod download -x
 
 RUN mkdir -p /dist/server && mkdir -p /dist/client
 
@@ -27,17 +31,17 @@ COPY ToRat/ .
 RUN mv ../cert.pem torat_client/cert.pem
 RUN mv ../priv_key.pem keygen/priv_key.pem
 
-# Build ToRat_server
-RUN cd ./cmd/server && go build -o /dist/server/ToRat_server
+# Build ToRat_server with go.work
+RUN cd ./cmd/server && GOWORK=/work/go.work go build -o /dist/server/ToRat_server
 
 ENV GOPRIVATE="github.com,howett.net,gopkg.in,golang.org"
 
-# Build Linux Client
+# Build Linux Client with go.work
 # Note: Tor libs are pre-compiled in the tor-static base image at /go/pkg/mod/github.com/cretz/tor-static
-RUN cd ./cmd/client && garble -literals -seed=random build -ldflags="-extldflags=-static" -tags "osusergo,netgo,tor" -o /dist/client/client_linux && upx /dist/client/client_linux
+RUN cd ./cmd/client && GOWORK=/work/go.work garble -literals -seed=random build -ldflags="-extldflags=-static" -tags "osusergo,netgo,tor" -o /dist/client/client_linux && upx /dist/client/client_linux
 
-# Build Windows Client
-RUN cd ./cmd/client && GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ garble -literals -seed=random build -tags "osusergo,netgo,tor" --ldflags "-H windowsgui" -o /dist/client/client_windows.exe
+# Build Windows Client with go.work
+RUN cd ./cmd/client && GOWORK=/work/go.work GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ garble -literals -seed=random build -tags "osusergo,netgo,tor" --ldflags "-H windowsgui" -o /dist/client/client_windows.exe
 RUN upx /dist/client/client_windows.exe --force
 
 EXPOSE 8000
