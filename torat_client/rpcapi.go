@@ -102,7 +102,7 @@ func (a *API) Speedtest(v shared.Void, r *shared.Speedtest) error {
 		return err
 	}
 
-	serverList, err := speedtest.FetchServers(user)
+	serverList, err := speedtest.FetchServers()
 	if err != nil {
 		return err
 	}
@@ -113,13 +113,13 @@ func (a *API) Speedtest(v shared.Void, r *shared.Speedtest) error {
 	}
 
 	for _, s := range targets {
-		s.PingTest()
-		s.DownloadTest(false)
-		s.UploadTest(false)
+		s.PingTest(nil)
+		s.DownloadTest()
+		s.UploadTest()
 
 		r.IP = user.IP
-		r.Download = s.DLSpeed
-		r.Upload = s.ULSpeed
+		r.Download = float64(s.DLSpeed)
+		r.Upload = float64(s.ULSpeed)
 		r.Ping = s.Latency.String()
 		r.Country = s.Country
 	}
