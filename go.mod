@@ -6,7 +6,7 @@ require (
 	github.com/JustinTimperio/gomap v1.0.0
 	github.com/JustinTimperio/osinfo v0.0.0-20210705143940-9e63396e3c2f
 	github.com/abiosoft/ishell v2.0.0+incompatible
-	github.com/godoineto/bine v0.2.0-updated
+	github.com/cretz/bine v0.2.0-updated
 	github.com/dimiro1/banner v1.1.0
 	github.com/fatih/color v1.19.0
 	github.com/jaypipes/ghw v0.25.0
