@@ -5,20 +5,23 @@ ENV GO_VERSION=1.26.0
 ENV PATH="/usr/local/go/bin:${PATH}"
 
 RUN go install mvdan.cc/garble@v0.17.0
-RUN mkdir /ToRat
-WORKDIR /ToRat
-COPY go.mod .
-COPY go.sum .
+RUN mkdir /work
+WORKDIR /work
+
+# Copy both bine and ToRat for go.work to find them
+COPY bine bine
+COPY ToRat ToRat
+WORKDIR /work/ToRat
 
 RUN go mod download -x
 
 RUN mkdir -p /dist/server && mkdir -p /dist/client
 
-COPY keygen/ keygen/
+COPY ToRat/keygen/ keygen/
 # Generate keys and certificates
 RUN cd ./keygen && go run .
 
-COPY . .
+COPY ToRat/ .
 
 # Move certificates to the correct location
 RUN mv ../cert.pem torat_client/cert.pem
